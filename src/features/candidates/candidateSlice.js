@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 export const candidateSlice = createSlice({
   name: 'cadidates',
@@ -11,28 +11,24 @@ export const candidateSlice = createSlice({
 
     },
     deleteCandidate: (state, action) => {
-
+      return state.filter(item => item.id !== action.payload)
     },
-    reset: state => {
-      // return {}
+    selectedCandidate: (state, action) => {
+      let getCandidate = state.filter(item => item.id === action.payload)[0]
+      let getCandidates = state.filter(item => item.id !== action.payload)
+
+      return [
+        ...getCandidates,
+        {
+          ...getCandidate,
+          selected: true
+        }
+      ]
     }
-    // increment: state => {
-    //   // Redux Toolkit allows us to write "mutating" logic in reducers. It
-    //   // doesn't actually mutate the state because it uses the Immer library,
-    //   // which detects changes to a "draft state" and produces a brand new
-    //   // immutable state based off those changes
-    //   state.value += 1;
-    // },
-    // decrement: state => {
-    //   state.value -= 1;
-    // },
-    // incrementByAmount: (state, action) => {
-    //   state.value += action.payload;
-    // },
   },
 });
 
-export const { add, edit, deleteCandidate, reset } = candidateSlice.actions;
+export const { add, edit, deleteCandidate, selectedCandidate } = candidateSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -49,5 +45,8 @@ export const { add, edit, deleteCandidate, reset } = candidateSlice.actions;
 // in the slice file. For example: `useSelector((state) => state.counter.value)`
 export const selectCount = state => state.counter.value;
 export const selectCandidates = state => state.candidates
+export const selectCandidate = (state, action) => {
+  console.log(action)
+}
 
 export default candidateSlice.reducer;

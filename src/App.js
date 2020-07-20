@@ -3,17 +3,15 @@ import logo from './logo.svg';
 import { Counter } from './features/counter/Counter';
 import './App.css';
 import { Container } from 'react-bootstrap'
-import { Form } from './features/form/Form'
-import { Lists } from './features/lists/Lists'
+import { Candidates } from './features/candidates/Candidates'
 
 function App() {
   return (
     <React.Fragment>
       <Container>
-        <Form />
-        <Lists />
+        <Candidates />
       </Container>
-      <div className="App">
+      {/* <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <Counter />
@@ -59,7 +57,7 @@ function App() {
             </a>
           </span>
         </header>
-      </div>
+      </div> */}
     </React.Fragment>
 
   );

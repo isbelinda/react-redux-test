@@ -1,17 +1,19 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from 'react-redux';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { countryList, gender } from '../../app/constant'
-import { add, selectCandidates, reset } from '../candidates/candidateSlice'
+import { add, selectCandidates, selectCandidate } from '../candidates/candidateSlice'
 
-export function Form() {
+export function Form(props) {
   const { register, handleSubmit, watch, errors, reset } = useForm();
   const [phoneNumber, setPhoneNumber] = useState('')
   const dispatch = useDispatch();
   const getCandidates = useSelector(selectCandidates)
+  const candidate = useSelector(selectCandidate)
 
+  console.log(getCandidates)
   const onSubmit = data => {
     let id = 1
     if(getCandidates.length > 0) {
@@ -19,6 +21,7 @@ export function Form() {
     }
     let postData = {
       ...data,
+      phone: phoneNumber,
       id: id
     }
     dispatch(add(postData))
