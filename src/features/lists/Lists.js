@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './List.module.scss';
 import { Table } from 'react-bootstrap'
+import { selectCandidates } from '../candidates/candidateSlice'
 
 export const Lists = () => {
+  const candidates = useSelector(selectCandidates);
+  console.log(candidates)
   return (
     <React.Fragment>
       <Table striped bordered hover>
@@ -18,19 +21,18 @@ export const Lists = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td colSpan="4">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
+          {
+            candidates.map((candidate, index) => (
+              <tr key={index}>
+                <td></td>
+                <td>{candidate.firstName} {candidate.lastName}</td>
+                <td>{candidate.gender}</td>
+                <td>{candidate.phone}</td>
+                <td>{candidate.nationality}</td>
+                <td>Edit/Delete</td>
+              </tr>
+            ))
+          }
         </tbody>
       </Table>
     </React.Fragment>

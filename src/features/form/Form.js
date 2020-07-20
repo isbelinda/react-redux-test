@@ -1,16 +1,28 @@
 import React, {useState} from "react";
 import { useForm } from "react-hook-form";
+import { useSelector, useDispatch } from 'react-redux';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { countryList, gender } from '../../app/constant'
+import { add, selectCandidates, reset } from '../candidates/candidateSlice'
 
 export function Form() {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, watch, errors, reset } = useForm();
   const [phoneNumber, setPhoneNumber] = useState('')
+  const dispatch = useDispatch();
+  const getCandidates = useSelector(selectCandidates)
 
   const onSubmit = data => {
-    console.log(data)
-    console.log(phoneNumber)
+    let id = 1
+    if(getCandidates.length > 0) {
+      id = getCandidates[getCandidates.length-1].id + 1
+    }
+    let postData = {
+      ...data,
+      id: id
+    }
+    dispatch(add(postData))
+    reset()
   }
 
   console.log(watch("phone")); // watch input value by passing the name of it
