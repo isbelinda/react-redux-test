@@ -20,13 +20,17 @@ export function Lists(props) {
     dispatch(deleteCandidate(id))
   }
 
+  const onEdit = (id) => {
+    window.location = `?id=${id}`
+  }
+
   return (
     <React.Fragment>
       <div className="row mb-3">
         <div className="col-sm-6">
         <div className="form-check">
           <input className="form-check-input" type="checkbox" value={isSelectAll} onChange={toggleSelectAll} />
-          <label className="form-check-label" >
+          <label className="form-check-label">
             Select All {isSelectAll}
           </label>
         </div>
@@ -55,7 +59,7 @@ export function Lists(props) {
                 <td>{candidate.phone}</td>
                 <td>{candidate.nationality}</td>
                 <td>
-                  <span onClick={() => dispatch(selectedCandidate(candidate.id))}>Edit</span>/<a onClick={() => onDelete(candidate.id)}>Delete</a>
+                  <span onClick={() => props.handleOnEdit(candidate.id)}>Edit</span>/<a onClick={() => onDelete(candidate.id)}>Delete</a>
                 </td>
               </tr>
             ))

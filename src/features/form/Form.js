@@ -1,19 +1,115 @@
 import React, {useState, useEffect} from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import { RHFInput } from 'react-hook-form-input';
 import { useSelector, useDispatch } from 'react-redux';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { countryList, gender } from '../../app/constant'
-import { add, selectCandidates, selectCandidate } from '../candidates/candidateSlice'
+import { add, selectCandidates, selectCandidate, candidateSlice } from '../candidates/candidateSlice'
 
 export function Form(props) {
-  const { register, handleSubmit, watch, errors, reset } = useForm();
+  // const dispatch = useDispatch();
+  // const { register, handleSubmit, setValue, reset } = useForm();
+  // const getCandidates = useSelector(selectCandidates)
+  // const [candidate, setCandidate] = useState({})
+  // const onSubmit = data => {
+  //   alert(JSON.stringify(data));
+  //   let id = 1
+  //   if(getCandidates.length > 0) {
+  //     id = getCandidates[getCandidates.length-1].id + 1
+  //   }
+  //   let postData = {
+  //     ...data,
+  //     selected: false,
+  //     id: id
+  //   }
+  //   dispatch(add(postData))
+  //   reset()
+  // };
+
+  // console.log(props)
+  // // if(props.candidateSelected) {
+  // //   let get = getCandidates.filter(item => item.id === props.candidateSelected)[0]
+  // //   console.log(get)
+  // //   setValue("firstName", "Set value by action");
+  // // }
+  // useEffect(() => {
+  //   console.log('a')
+  //   console.log(props.candidateSelected)
+  //   if(props.candidateSelected) {
+  //     console.log('get can')
+  //     let get = getCandidates.filter(item => item.id === props.candidateSelected)[0]
+  //     console.log(get)
+  //     // setValue("firstName", "Set value by action");
+  //     setCandidate(get)
+  //   }
+  // }, [props.candidateSelected])
+  // console.log(candidate)
+  // return (
+  //   <form onSubmit={handleSubmit(onSubmit)}>
+  //     <label htmlFor="firstName">First Name</label>
+  //     <input name="firstName" placeholder="bill" ref={register} />
+
+  //     <label htmlFor="lastName">Last Name</label>
+  //     <input name="lastName" placeholder="luo" ref={register} />
+
+  //     <label htmlFor="email">Email</label>
+  //     <input
+  //       name="email"
+  //       placeholder="bluebill1049@hotmail.com"
+  //       type="email"
+  //       ref={register}
+  //     />
+
+  //     <label>Is developer?</label>
+  //     <input name="isDeveloper" type="checkbox" ref={register} />
+
+  //     <label>Age group</label>
+  //     <select ref={register} name="ageGroup">
+  //       <option value="0">0 - 1</option>
+  //       <option value="1">1 - 100</option>
+  //     </select>
+
+  //     <label>Sex</label>
+  //     <input type="radio" name="sex" ref={register} value="male" />
+  //     <input type="radio" name="sex" ref={register} value="female" />
+
+  //     <button
+  //       type="button"
+  //       onClick={() => {
+  //         setValue("firstName", "Set value by action");
+  //         setValue("ageGroup", "1");
+  //         setValue("isDeveloper", true);
+  //         setValue("sex", "male");
+  //       }}
+  //     >
+  //       Set All Values
+  //     </button>
+  //     <input type="submit" />
+  //   </form>
+  // );
+  const [candidate, setCandidate] = useState({})
+  const getCandidates = useSelector(selectCandidates)
+  const displayCandidate = () => {
+    let get = getCandidates.filter(item => item.id === props.candidateSelected)[0]
+    return get
+  }
+  const { register, handleSubmit, watch, errors, reset, setValue } = useForm();
   const [phoneNumber, setPhoneNumber] = useState('')
   const dispatch = useDispatch();
-  const getCandidates = useSelector(selectCandidates)
-  const candidate = useSelector(selectCandidate)
+  console.log(candidate)
+  console.log(displayCandidate())
 
-  console.log(getCandidates)
+  useEffect(() => {
+    if(props.candidateSelected) {
+      let get = getCandidates.filter(item => item.id === props.candidateSelected)[0]
+      console.log(get)
+      setValue("firstName", get.firstName);
+      setValue("lastName", get.lastName)
+      setCandidate(get)
+    }
+  }, [props.candidateSelected])
+
   const onSubmit = data => {
     let id = 1
     if(getCandidates.length > 0) {
@@ -22,13 +118,14 @@ export function Form(props) {
     let postData = {
       ...data,
       phone: phoneNumber,
+      selected: false,
       id: id
     }
     dispatch(add(postData))
     reset()
   }
 
-  console.log(watch("phone")); // watch input value by passing the name of it
+  // console.log(watch("phone")); // watch input value by passing the name of it
 
   return (
     <React.Fragment>
@@ -135,6 +232,7 @@ export function Form(props) {
               onChange={setPhoneNumber}
             />
             {/* <input type="text" className="form-control" name="mobilePhone" ref={register({ required: true })} /> */}
+
           </div>
         </div>
 

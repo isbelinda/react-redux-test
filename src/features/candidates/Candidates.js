@@ -20,7 +20,7 @@ export function Candidates() {
 
   return (
     <React.Fragment>
-      <Form />
+      <Form candidateSelected={candidateId} />
       <div className="my-4"></div>
       <Lists handleOnEdit={onEdit} />
     </React.Fragment>
