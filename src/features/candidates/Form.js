@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { countryList, gender } from '../../app/constant'
-import { add, selectCandidates, edit } from '../candidates/candidateSlice'
+import { add, selectCandidates, edit } from './candidateSlice'
 
 export function Form(props) {
   const [candidate, setCandidate] = useState({})

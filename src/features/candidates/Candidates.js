@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Form } from '../form/Form'
-import { Lists } from '../lists/Lists'
+import { Form } from './Form'
+import { Lists } from './Lists'
 import { selectCandidates } from './candidateSlice'
 
 export function Candidates() {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Table } from 'react-bootstrap'
-import { selectCandidates, deleteCandidate, deleteSelected } from '../candidates/candidateSlice'
+import { selectCandidates, deleteCandidate, deleteSelected } from './candidateSlice'
 
 export function Lists(props) {
   const [allCandidates, setAllCandidates] = useState([])
