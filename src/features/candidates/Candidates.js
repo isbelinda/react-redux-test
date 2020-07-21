@@ -10,6 +10,8 @@ export function Candidates() {
   // const dispatch = useDispatch()
   const defaultValues = {
     citizenId: "7787766555444",
+    checked: false,
+    selected: false
   };
   const [candidateId, setCandidateId] = useState('')
   const [candidate, setCandidate] = useState(defaultValues)

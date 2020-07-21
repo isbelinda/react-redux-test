@@ -1,22 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Table } from 'react-bootstrap'
-import { selectCandidates, deleteCandidate } from '../candidates/candidateSlice'
+import { selectCandidates, deleteCandidate, deleteSelected } from '../candidates/candidateSlice'
 
 export function Lists(props) {
+  const [allCandidates, setAllCandidates] = useState([])
   const candidates = useSelector(selectCandidates);
   const [isSelectAll, setIsSelectAll] = useState(false)
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    setAllCandidates(candidates)
+  }, [candidates])
+
   const toggleSelectAll = (e) => {
     setIsSelectAll(!isSelectAll)
-    if(!isSelectAll) {
+    let updateCandidates = allCandidates.map(candidate => {
+      return {
+        ...candidate,
+        checked: !isSelectAll
+      }
+    })
 
-    }
+    setAllCandidates(updateCandidates)
   }
 
   const onDelete = id => {
     dispatch(deleteCandidate(id))
+    setIsSelectAll(false)
+  }
+
+  const onDeleteSelected = () => {
+    let getDeleteCandidates = allCandidates.filter(candidate => candidate.checked).map(item => {
+      if(item.checked) {
+        return item.id
+      }
+    })
+
+    console.log(getDeleteCandidates)
+
+    dispatch(deleteSelected(getDeleteCandidates))
+  }
+
+  const selectCheckbox = (id) => {
+    let index = allCandidates.findIndex(item => item.id === id)
+    let candidate = allCandidates[index]
+    let data = {
+      ...candidate,
+      checked: !candidate.checked
+    }
+
+    let updateCandidates = [
+      ...allCandidates.slice(0, index),
+      data,
+      ...allCandidates.slice(index+1, allCandidates.length)
+    ]
+
+    setAllCandidates(updateCandidates)
+    setIsSelectAll(false)
   }
 
   return (
@@ -26,10 +67,10 @@ export function Lists(props) {
         <div className="form-check">
           <input className="form-check-input" type="checkbox" value={isSelectAll} onChange={toggleSelectAll} />
           <label className="form-check-label">
-            Select All {isSelectAll}
+            Select All
           </label>
         </div>
-          <button type="button" className="btn btn-outline-danger">Delete</button>
+          <button type="button" className="btn btn-outline-danger" onClick={() => onDeleteSelected()}>Delete</button>
         </div>
         <div className="col-sm-6"></div>
       </div>
@@ -46,9 +87,15 @@ export function Lists(props) {
         </thead>
         <tbody>
           {
-            candidates.length > 0 && candidates.map((candidate, index) => (
+            allCandidates.length > 0 && allCandidates.map((candidate, index) => (
               <tr key={index}>
-                <td></td>
+                <td>
+                  <div className="form-group form-check">
+                    <input type="checkbox" className="form-check-input" checked={candidate.checked}
+                      value={candidate.checked}
+                      onChange={() => selectCheckbox(candidate.id)} />
+                  </div>
+                </td>
                 <td>{candidate.firstName} {candidate.lastName}</td>
                 <td>{candidate.gender}</td>
                 <td>{candidate.phone}</td>
@@ -60,7 +107,7 @@ export function Lists(props) {
             ))
           }
           {
-            !candidates.length &&
+            !allCandidates.length &&
               <tr>
                 <td className="text-center" colSpan="6">Data Not Found.</td>
               </tr>

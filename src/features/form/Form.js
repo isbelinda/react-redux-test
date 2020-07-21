@@ -27,9 +27,9 @@ export function Form(props) {
     }
 
     let postData = {
+      ...props.candidateSelected,
       ...data,
       phone: phoneNumber,
-      selected: false,
       id: candidate.id ? candidate.id : id
     }
 

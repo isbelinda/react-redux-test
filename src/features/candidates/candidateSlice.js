@@ -14,10 +14,13 @@ export const candidateSlice = createSlice({
     deleteCandidate: (state, action) => {
       return state.filter(item => item.id !== action.payload)
     },
+    deleteSelected: (state, action) => {
+      return state.filter(item => !action.payload.includes(item.id))
+    },
   },
 });
 
-export const { add, edit, deleteCandidate } = candidateSlice.actions;
+export const { add, edit, deleteCandidate, deleteSelected } = candidateSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
