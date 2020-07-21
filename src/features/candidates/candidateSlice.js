@@ -14,34 +14,10 @@ export const candidateSlice = createSlice({
     deleteCandidate: (state, action) => {
       return state.filter(item => item.id !== action.payload)
     },
-    selectedCandidate: (state, action) => {
-      let getIndex = state.findIndex(item => item.id === action.payload)
-      console.log(getIndex)
-      let a = state[getIndex]
-      console.log({
-        ...a,
-        selected: true
-      })
-
-      state[getIndex] = a
-      // let getCandidate = state.filter(item => item.id === action.payload)[0]
-      // let candidateNotEdit = state.filter(item => item.id != action.payload)
-      // let getAllCandidates = candidateNotEdit.map(item => {
-      //   item.selected = false
-      //   return item
-      // })
-      // return [
-      //   ...getAllCandidates,
-      //   {
-      //     ...getCandidate,
-      //     selected: true
-      //   }
-      // ]
-    }
   },
 });
 
-export const { add, edit, deleteCandidate, selectedCandidate } = candidateSlice.actions;
+export const { add, edit, deleteCandidate } = candidateSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

@@ -1,41 +1,24 @@
 import React, {useState, useEffect} from "react";
-import { useForm, Controller } from "react-hook-form";
-import { RHFInput } from 'react-hook-form-input';
+import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from 'react-redux';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { countryList, gender } from '../../app/constant'
-import { add, selectCandidates, selectCandidate, candidateSlice, edit } from '../candidates/candidateSlice'
+import { add, selectCandidates, edit } from '../candidates/candidateSlice'
 
-const defaultValues = {
-  citizenId: "7787766555444",
-};
 export function Form(props) {
-  console.log(props)
-  console.log(props.candidateSelected)
-  const [candidate, setCandidate] = useState(defaultValues)
+  const [candidate, setCandidate] = useState({})
   const getCandidates = useSelector(selectCandidates)
-  const getForm = () => {
-    return props.candidateSelected
-  }
-  const { register, handleSubmit, watch, errors, reset, setValue } = useForm({ defaultValues: getForm() });
+  const { register, handleSubmit, watch, errors, reset, setValue } = useForm({ defaultValues: props.candidateSelected });
   const [phoneNumber, setPhoneNumber] = useState('')
   const dispatch = useDispatch();
 
-
-  // useEffect(() => {
-  //   // setValue('citizenId', 'data[key]')
-  //   register({ firstName: 'test' });
-  //   if(props.candidateSelected) {
-  //     let data = getCandidates.filter(item => item.id === props.candidateSelected)[0]
-  //     console.log(data)
-  //     setCandidate(data)
-
-  //     // for (var key in data) {
-  //     //   setValue(key, data[key])
-  //     // }
-  //   }
-  // }, [props.candidateSelected])
+  useEffect(() => {
+    if(props.candidateSelected.id) {
+      setCandidate(props.candidateSelected)
+      setPhoneNumber(props.candidateSelected.phone)
+    }
+  }, [props.candidateSelected])
 
   const onSubmit = data => {
     let id = 1
@@ -50,13 +33,12 @@ export function Form(props) {
       id: candidate.id ? candidate.id : id
     }
 
-    // if(props.candidateSelected) {
-    //   dispatch(edit(postData))
-    // } else {
-    //   dispatch(add(postData))
-    // }
-    console.log(postData)
-    dispatch(add(postData))
+    if(props.candidateSelected.id) {
+      dispatch(edit(postData))
+    } else {
+      dispatch(add(postData))
+    }
+
     props.handleResetCandidateSelected()
     reset()
   }
@@ -136,16 +118,6 @@ export function Form(props) {
           </div>
           <div className="col-sm-5">
             <input type="text" className="form-control" name="citizenId" ref={register} />
-            <RHFInput
-              as={
-                <input/>
-              }
-              type="input"
-              name="resultDistance"
-              data-cy="resultDistance"
-              register={register({ required: true })}
-              setValue={setValue}
-            />
           </div>
         </div>
 
@@ -177,8 +149,6 @@ export function Form(props) {
               value={phoneNumber}
               onChange={setPhoneNumber}
             />
-            {/* <input type="text" className="form-control" name="mobilePhone" ref={register({ required: true })} /> */}
-
           </div>
         </div>
 

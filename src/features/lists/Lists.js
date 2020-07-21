@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import styles from './List.module.scss';
 import { Table } from 'react-bootstrap'
-import { selectCandidates, deleteCandidate, selectedCandidate } from '../candidates/candidateSlice'
+import { selectCandidates, deleteCandidate } from '../candidates/candidateSlice'
 
 export function Lists(props) {
   const candidates = useSelector(selectCandidates);
@@ -18,10 +17,6 @@ export function Lists(props) {
 
   const onDelete = id => {
     dispatch(deleteCandidate(id))
-  }
-
-  const onEdit = (id) => {
-    window.location = `?id=${id}`
   }
 
   return (
