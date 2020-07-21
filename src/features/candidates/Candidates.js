@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Form } from './Form'
 import { Lists } from './Lists'
 import { selectCandidates } from './candidateSlice'
@@ -10,7 +10,6 @@ export function Candidates() {
     checked: false,
     selected: false
   };
-  const [candidateId, setCandidateId] = useState('')
   const [candidate, setCandidate] = useState(defaultValues)
   const [displayForm, setDisplayForm] = useState(false)
 
@@ -36,8 +35,9 @@ export function Candidates() {
           candidateSelected={candidate} />
       }
 
-      <div className="my-4"></div>
-      <button type="button" className="btn btn-primary" onClick={() => onAdd()}>Add</button>
+      <button type="button" className="btn btn-primary my-4" onClick={() => onAdd()}>
+        Add
+      </button>
       <Lists handleOnEdit={onEdit} />
     </React.Fragment>
   )

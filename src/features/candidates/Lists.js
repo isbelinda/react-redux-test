@@ -74,12 +74,15 @@ export function Lists(props) {
       <div className="row mb-3">
         <div className="col-sm-6 d-flex align-items-baseline">
         <div className="form-check">
-          <input className="form-check-input" type="checkbox" disabled={!candidates.length} value={isSelectAll} onChange={toggleSelectAll} />
+          <input className="form-check-input" type="checkbox" disabled={!candidates.length}
+            value={isSelectAll} onChange={toggleSelectAll} />
           <label className="form-check-label">
             Select All
           </label>
         </div>
-          <button type="button" className="btn btn-outline-danger ml-4" onClick={() => onDeleteSelected()}>Delete</button>
+          <button type="button" className="btn btn-outline-danger ml-4"
+            disabled={!candidates.length}
+            onClick={() => onDeleteSelected()}>Delete</button>
         </div>
         <div className="col-sm-6"></div>
       </div>
@@ -110,7 +113,8 @@ export function Lists(props) {
                 <td>{candidate.phone}</td>
                 <td>{candidate.nationality}</td>
                 <td>
-                  <span onClick={() => props.handleOnEdit(candidate.id)}>Edit</span>/<a onClick={() => onDelete(candidate.id)}>Delete</a>
+                  <span onClick={() => props.handleOnEdit(candidate.id)} className="c-pointer">Edit</span>/
+                  <a onClick={() => onDelete(candidate.id)} className="c-pointer">Delete</a>
                 </td>
               </tr>
             ))
