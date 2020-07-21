@@ -5,123 +5,59 @@ import { useSelector, useDispatch } from 'react-redux';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { countryList, gender } from '../../app/constant'
-import { add, selectCandidates, selectCandidate, candidateSlice } from '../candidates/candidateSlice'
+import { add, selectCandidates, selectCandidate, candidateSlice, edit } from '../candidates/candidateSlice'
 
+const defaultValues = {
+  citizenId: "7787766555444",
+};
 export function Form(props) {
-  // const dispatch = useDispatch();
-  // const { register, handleSubmit, setValue, reset } = useForm();
-  // const getCandidates = useSelector(selectCandidates)
-  // const [candidate, setCandidate] = useState({})
-  // const onSubmit = data => {
-  //   alert(JSON.stringify(data));
-  //   let id = 1
-  //   if(getCandidates.length > 0) {
-  //     id = getCandidates[getCandidates.length-1].id + 1
-  //   }
-  //   let postData = {
-  //     ...data,
-  //     selected: false,
-  //     id: id
-  //   }
-  //   dispatch(add(postData))
-  //   reset()
-  // };
-
-  // console.log(props)
-  // // if(props.candidateSelected) {
-  // //   let get = getCandidates.filter(item => item.id === props.candidateSelected)[0]
-  // //   console.log(get)
-  // //   setValue("firstName", "Set value by action");
-  // // }
-  // useEffect(() => {
-  //   console.log('a')
-  //   console.log(props.candidateSelected)
-  //   if(props.candidateSelected) {
-  //     console.log('get can')
-  //     let get = getCandidates.filter(item => item.id === props.candidateSelected)[0]
-  //     console.log(get)
-  //     // setValue("firstName", "Set value by action");
-  //     setCandidate(get)
-  //   }
-  // }, [props.candidateSelected])
-  // console.log(candidate)
-  // return (
-  //   <form onSubmit={handleSubmit(onSubmit)}>
-  //     <label htmlFor="firstName">First Name</label>
-  //     <input name="firstName" placeholder="bill" ref={register} />
-
-  //     <label htmlFor="lastName">Last Name</label>
-  //     <input name="lastName" placeholder="luo" ref={register} />
-
-  //     <label htmlFor="email">Email</label>
-  //     <input
-  //       name="email"
-  //       placeholder="bluebill1049@hotmail.com"
-  //       type="email"
-  //       ref={register}
-  //     />
-
-  //     <label>Is developer?</label>
-  //     <input name="isDeveloper" type="checkbox" ref={register} />
-
-  //     <label>Age group</label>
-  //     <select ref={register} name="ageGroup">
-  //       <option value="0">0 - 1</option>
-  //       <option value="1">1 - 100</option>
-  //     </select>
-
-  //     <label>Sex</label>
-  //     <input type="radio" name="sex" ref={register} value="male" />
-  //     <input type="radio" name="sex" ref={register} value="female" />
-
-  //     <button
-  //       type="button"
-  //       onClick={() => {
-  //         setValue("firstName", "Set value by action");
-  //         setValue("ageGroup", "1");
-  //         setValue("isDeveloper", true);
-  //         setValue("sex", "male");
-  //       }}
-  //     >
-  //       Set All Values
-  //     </button>
-  //     <input type="submit" />
-  //   </form>
-  // );
-  const [candidate, setCandidate] = useState({})
+  console.log(props)
+  console.log(props.candidateSelected)
+  const [candidate, setCandidate] = useState(defaultValues)
   const getCandidates = useSelector(selectCandidates)
-  const displayCandidate = () => {
-    let get = getCandidates.filter(item => item.id === props.candidateSelected)[0]
-    return get
+  const getForm = () => {
+    return props.candidateSelected
   }
-  const { register, handleSubmit, watch, errors, reset, setValue } = useForm();
+  const { register, handleSubmit, watch, errors, reset, setValue } = useForm({ defaultValues: getForm() });
   const [phoneNumber, setPhoneNumber] = useState('')
   const dispatch = useDispatch();
-  console.log(candidate)
-  console.log(displayCandidate())
 
-  useEffect(() => {
-    if(props.candidateSelected) {
-      let get = getCandidates.filter(item => item.id === props.candidateSelected)[0]
-      console.log(get)
-      setValue("firstName", get.firstName);
-      setValue("lastName", get.lastName)
-      setCandidate(get)
-    }
-  }, [props.candidateSelected])
+
+  // useEffect(() => {
+  //   // setValue('citizenId', 'data[key]')
+  //   register({ firstName: 'test' });
+  //   if(props.candidateSelected) {
+  //     let data = getCandidates.filter(item => item.id === props.candidateSelected)[0]
+  //     console.log(data)
+  //     setCandidate(data)
+
+  //     // for (var key in data) {
+  //     //   setValue(key, data[key])
+  //     // }
+  //   }
+  // }, [props.candidateSelected])
 
   const onSubmit = data => {
     let id = 1
     if(getCandidates.length > 0) {
       id = getCandidates[getCandidates.length-1].id + 1
     }
+
     let postData = {
       ...data,
       phone: phoneNumber,
       selected: false,
-      id: id
+      id: candidate.id ? candidate.id : id
     }
+
+    // if(props.candidateSelected) {
+    //   dispatch(edit(postData))
+    // } else {
+    //   dispatch(add(postData))
+    // }
+    console.log(postData)
     dispatch(add(postData))
+    props.handleResetCandidateSelected()
     reset()
   }
 
@@ -200,6 +136,16 @@ export function Form(props) {
           </div>
           <div className="col-sm-5">
             <input type="text" className="form-control" name="citizenId" ref={register} />
+            <RHFInput
+              as={
+                <input/>
+              }
+              type="input"
+              name="resultDistance"
+              data-cy="resultDistance"
+              register={register({ required: true })}
+              setValue={setValue}
+            />
           </div>
         </div>
 
