@@ -43,8 +43,6 @@ export function Form(props) {
     reset()
   }
 
-  // console.log(watch("phone")); // watch input value by passing the name of it
-
   return (
     <React.Fragment>
       <div className="py-4"></div>

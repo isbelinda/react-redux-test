@@ -1,19 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import Pagination from 'reactjs-hooks-pagination';
 import { Table } from 'react-bootstrap'
 import { selectCandidates, deleteCandidate, deleteSelected } from './candidateSlice'
 
 export function Lists(props) {
-  const [allCandidates, setAllCandidates] = useState([])
-  const candidates = useSelector(selectCandidates);
-  const [isSelectAll, setIsSelectAll] = useState(false)
   const dispatch = useDispatch()
+  const pageLimit = 2;
+  const candidates = useSelector(selectCandidates);
+  const [allCandidates, setAllCandidates] = useState([])
+  const [isSelectAll, setIsSelectAll] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalRecords, setTotalRecords] = useState(0);
 
   useEffect(() => {
-    setAllCandidates(candidates)
-  }, [candidates])
+    setTotalRecords(candidates.length)
+    let startIndex = (currentPage - 1) * pageLimit
+    let getCandidates = candidates.slice(startIndex, startIndex + pageLimit)
+    if(!getCandidates.length) {
+      startIndex = startIndex - 1
+      getCandidates = candidates.slice(startIndex-1, startIndex + pageLimit)
+    }
+    setAllCandidates(getCandidates)
+  }, [candidates, currentPage])
 
-  const toggleSelectAll = (e) => {
+  const toggleSelectAll = () => {
     setIsSelectAll(!isSelectAll)
     let updateCandidates = allCandidates.map(candidate => {
       return {
@@ -63,7 +74,7 @@ export function Lists(props) {
       <div className="row mb-3">
         <div className="col-sm-6 d-flex align-items-baseline">
         <div className="form-check">
-          <input className="form-check-input" type="checkbox" value={isSelectAll} onChange={toggleSelectAll} />
+          <input className="form-check-input" type="checkbox" disabled={!candidates.length} value={isSelectAll} onChange={toggleSelectAll} />
           <label className="form-check-label">
             Select All
           </label>
@@ -112,6 +123,14 @@ export function Lists(props) {
           }
         </tbody>
       </Table>
+      {
+        candidates.length > pageLimit &&
+        <Pagination
+          totalRecords={totalRecords}
+          pageLimit={pageLimit}
+          pageRangeDisplayed={1}
+          onChangePage={setCurrentPage} />
+      }
     </React.Fragment>
   )
 }
