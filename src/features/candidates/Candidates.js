@@ -6,10 +6,7 @@ import { selectCandidates } from './candidateSlice'
 
 export function Candidates() {
   const candidates = useSelector(selectCandidates);
-  // const [isSelectAll, setIsSelectAll] = useState(false)
-  // const dispatch = useDispatch()
   const defaultValues = {
-    citizenId: "7787766555444",
     checked: false,
     selected: false
   };
@@ -17,20 +14,15 @@ export function Candidates() {
   const [candidate, setCandidate] = useState(defaultValues)
   const [displayForm, setDisplayForm] = useState(false)
 
-  useEffect(() => {
-    console.log(candidateId)
-  }, [candidateId])
-
   const onEdit = id => {
-    // setCandidateId(id)
     let candidate = candidates.filter(item => item.id === id)
     setCandidate(candidate[0])
     setDisplayForm(true)
   }
 
   const resetCandidateSelected = () => {
-    setCandidateId('')
     setDisplayForm(false)
+    setCandidate(defaultValues)
   }
 
   const onAdd = () => {
@@ -40,9 +32,8 @@ export function Candidates() {
   return (
     <React.Fragment>
       { displayForm &&
-        <Form candidateSelected={candidateId}
-        handleResetCandidateSelected={resetCandidateSelected}
-        candidateSelected={candidate} />
+        <Form handleResetCandidateSelected={resetCandidateSelected}
+          candidateSelected={candidate} />
       }
 
       <div className="my-4"></div>

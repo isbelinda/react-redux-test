@@ -37,8 +37,6 @@ export function Lists(props) {
       }
     })
 
-    console.log(getDeleteCandidates)
-
     dispatch(deleteSelected(getDeleteCandidates))
   }
 
@@ -63,14 +61,14 @@ export function Lists(props) {
   return (
     <React.Fragment>
       <div className="row mb-3">
-        <div className="col-sm-6">
+        <div className="col-sm-6 d-flex align-items-baseline">
         <div className="form-check">
           <input className="form-check-input" type="checkbox" value={isSelectAll} onChange={toggleSelectAll} />
           <label className="form-check-label">
             Select All
           </label>
         </div>
-          <button type="button" className="btn btn-outline-danger" onClick={() => onDeleteSelected()}>Delete</button>
+          <button type="button" className="btn btn-outline-danger ml-4" onClick={() => onDeleteSelected()}>Delete</button>
         </div>
         <div className="col-sm-6"></div>
       </div>

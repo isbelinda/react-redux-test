@@ -95,7 +95,15 @@ export function Form(props) {
               Birthday:<span className="text-danger">*</span>
             </div>
             <div className="col-sm-8">
-              <input type="date" className="form-control" name="birthday" ref={register} />
+              <input type="date"
+                className={`form-control ${errors.birthday ? 'is-invalid':''}`}
+                name="birthday" ref={register({ required: true })} />
+              {
+                errors.lastName &&
+                <div className="invalid-feedback">
+                  The field is require.
+                </div>
+              }
             </div>
           </div>
           <div className="row align-items-baseline">
@@ -117,7 +125,13 @@ export function Form(props) {
             CitizenID:
           </div>
           <div className="col-sm-5">
-            <input type="text" className="form-control" name="citizenId" ref={register} />
+            <input type="number" className="form-control" name="citizenId"
+              ref={register({ maxLength: { value: 13, message: "error message" } })}
+              className={`form-control ${errors?.citizenId?.message ? 'is-invalid':''}`} />
+            {
+              errors?.citizenId?.message &&
+              <span className="invalid-feedback">Citizen ID have 13 Charactor</span>
+            }
           </div>
         </div>
 
@@ -166,7 +180,7 @@ export function Form(props) {
             Expected Salary:<span className="text-danger">*</span>:
           </div>
           <div className="col-sm-3">
-            <input type="text"
+            <input type="number"
                 className={`form-control ${errors.expectedSalary ? 'is-invalid':''}`}
                 name="expectedSalary" ref={register({ required: true })} />
             {
